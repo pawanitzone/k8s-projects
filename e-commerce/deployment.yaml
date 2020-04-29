@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: e-commerce-deployment
+  labels:
+    app: e-commerce
+spec:
+  replica: 1
+  selector:
+    matchLabels:
+      app: e-commerce
+  template:
+    metdata:
+      name: e-commerce
+      labels:
+        app: e-commerce
+    spec:
+      containers:
+        - name: e-commerce
+          image: pawanitzone/e-commerce-website
+          ports:
+            - containerPort: 80
+          env:
+            - name: DB_SERVER
+              value: e-commerce-db-svc
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: e-commerce-pass
+                  key: dbname
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: e-commerce-pass
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: e-commerce-pass
+                  key: password

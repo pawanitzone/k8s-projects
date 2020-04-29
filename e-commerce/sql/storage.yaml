@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: e-commerce-pvc-claim
+spec:
+  storageClassName: e-commerce-ssd
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+# How do we want it implemented
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: e-commerce-ssd
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-standard

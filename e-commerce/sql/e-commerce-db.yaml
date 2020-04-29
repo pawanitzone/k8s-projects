@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: e-commerce-db
+  labels:
+    app: e-commerce-db
+spec:
+  replica: 1
+  selector:
+    matchLabels:
+      app: e-commerce-db
+  template:
+    metdata:
+      name: e-commerce-db
+      labels:
+        app: e-commerce-db
+    spec:
+      containers:
+        - name: e-commerce-db
+          image: pawanitzone/e-commerce-db
+          ports:
+            - containerPort: 80
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+               secretKeyRef:
+                name: e-commerce-pass
+                key: password
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: e-commerce-vol
+              subPath: mysql
+          livenessProbe:
+            exec:
+              command: ["mysqladmin", "ping"]
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+
+      volumes:
+        - name: e-commerce-vol
+          persistentVolumeClaim:
+            claimName: e-commerce-pvc-claim

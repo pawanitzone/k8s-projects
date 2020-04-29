@@ -1,0 +1,42 @@
+pipeline {
+  agent any
+    environment {
+        PROJECT_ID = 'essential-smoke-274903'
+        LOCATION = 'us-central1-c'
+        CREDENTIALS_ID = 'gkeweb'
+        CLUSTER_NAME = 'hirelab'
+
+    }
+  stages {
+    stage('Docker Build') {
+      steps {
+        sh "docker build -t pawanitzone/e-commerce-website:${env.BUILD_NUMBER} mysql/."
+      }
+    }
+    stage('Docker Push') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerHubUser', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh "docker push pawanitzone/e-commerce-website:${env.BUILD_NUMBER}"
+        }
+      }
+    }
+    stage('Docker Remove Image') {
+      steps {
+        sh "docker rmi pawanitzone/e-commerce-website:${env.BUILD_NUMBER}"
+      }
+    }
+
+
+    stage('Deploy to GKE') {
+       steps{
+           sh "sed -i 's/e-commerce-website/e-commerce-website:${env.BUILD_ID}/g' deployment.yaml"
+	  step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'mysql/secret.yml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+
+       }
+      }
+  }
+}
+
+
+
