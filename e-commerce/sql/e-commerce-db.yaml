@@ -1,16 +1,16 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: e-commerce-db
   labels:
     app: e-commerce-db
 spec:
-  replica: 1
+  replicas: 1
   selector:
     matchLabels:
       app: e-commerce-db
   template:
-    metdata:
+    metadata:
       name: e-commerce-db
       labels:
         app: e-commerce-db

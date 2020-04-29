@@ -5,12 +5,12 @@ metadata:
   labels:
     app: e-commerce
 spec:
-  replica: 1
+  replicas: 1
   selector:
     matchLabels:
       app: e-commerce
   template:
-    metdata:
+    metadata:
       name: e-commerce
       labels:
         app: e-commerce
@@ -18,6 +18,7 @@ spec:
       containers:
         - name: e-commerce
           image: pawanitzone/e-commerce-website
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
