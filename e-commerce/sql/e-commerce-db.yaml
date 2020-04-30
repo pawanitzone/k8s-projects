@@ -14,12 +14,12 @@ spec:
       name: e-commerce-db
       labels:
         app: e-commerce-db
-    spec:
+    spec: 
       containers:
         - name: e-commerce-db
           image: pawanitzone/e-commerce-db
           ports:
-            - containerPort: 80
+            - containerPort: 3306
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
