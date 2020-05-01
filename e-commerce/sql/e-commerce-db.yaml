@@ -19,22 +19,16 @@ spec:
       containers:
         - name: e-commerce-db
           image: pawanitzone/e-commerce-db
+          imagePullPolicy: Always
           ports:
             - containerPort: 3306
           env:
            - name: MYSQL_ALLOW_EMPTY_PASSWORD
-               value: "1"
+             value: "1"
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: e-commerce-vol
              
-          livenessProbe:
-            exec:
-              command: ["mysqladmin", "ping"]
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 5
-
       volumes:
         - name: e-commerce-vol
           persistentVolumeClaim:

@@ -6,7 +6,11 @@
 -- Generation Time: Oct 16, 2018 at 04:26 PM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 5.6.32
-
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+SET GLOBAL explicit_defaults_for_timestamp = 1;
 --
 -- Database: `grocery`
 --
