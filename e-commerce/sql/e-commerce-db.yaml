@@ -1,11 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: e-commerce-db
   labels:
     app: e-commerce-db
 spec:
   replicas: 1
+  serviceName: e-commerce-db-hsvc
   selector:
     matchLabels:
       app: e-commerce-db
