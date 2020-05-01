@@ -27,7 +27,7 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: e-commerce-vol
-              subPath: mysql
+             
           livenessProbe:
             exec:
               command: ["mysqladmin", "ping"]
